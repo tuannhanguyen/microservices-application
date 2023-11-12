@@ -15,11 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
+    
+    
 
     public void createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
@@ -51,5 +53,10 @@ public class ProductService {
                 .price(product.getPrice())
                 .build();
     }
+
+	public ProductService(ProductRepository productRepository) {
+		super();
+		this.productRepository = productRepository;
+	}
 
 }
