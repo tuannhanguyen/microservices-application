@@ -38,7 +38,7 @@ public class OrderService {
         listOrderLineItemsDtos.forEach(o -> {
             orderLineItems.add(new OrderLineItems(o.getId(), o.getSkuCode(), o.getPrice(), o.getQuantity()));
         });
-        
+
         List<String> skuCodes = listOrderLineItemsDtos.stream()
         				.map(o -> o.getSkuCode())
         				.toList();
@@ -49,23 +49,23 @@ public class OrderService {
 //                                .toList();
 
         order.setOrderLineItemsList(orderLineItems);
-        
+
         InventoryResponse[] result = webClient.get()
-        		.uri("localhost:8082/api/inventory",
+        		.uri("http://localhost:8082/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
                 .block();
-//        
-//        boolean allProductsInStock = Arrays.asList(result).stream()
-//        				.allMatch(inventoryResponse -> inventoryResponse.isInStock());
-        				
 
-//        if (allProductsInStock) {
+        boolean allProductsInStock = Arrays.asList(result).stream()
+        				.allMatch(inventoryResponse -> inventoryResponse.isInStock());
+
+
+        if (allProductsInStock) {
         	orderRepository.save(order);
-//        } else {
-//        	throw new IllegalArgumentException("Product is not in stock");
-//        }
+        } else {
+        	throw new IllegalArgumentException("Product is not in stock");
+        }
     	System.out.println("erejkj");
     }
 
