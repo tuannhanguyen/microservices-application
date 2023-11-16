@@ -64,9 +64,9 @@ public class OrderService {
         if (allProductsInStock) {
         	orderRepository.save(order);
         } else {
+        	System.out.println("Product is not in stock");
         	throw new IllegalArgumentException("Product is not in stock");
         }
-    	System.out.println("erejkj");
     }
 
     private OrderLineItems mapToDto(OrderLineItemsDto dto) {
